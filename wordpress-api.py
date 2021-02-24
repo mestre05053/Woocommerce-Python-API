@@ -89,6 +89,11 @@ regular_price = "28"
 sale_price = "33"
 manage_stock = "True"
 stock_quantity = "35"
+images =  [
+		    {"src": "http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/T_2_front.jpg"}
+		    ,
+			{"src": "http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/T_2_back.jpg"}
+    	  ]
 
 test['sku'] = sku
 test['name'] = name
@@ -100,6 +105,8 @@ test['regular_price'] = regular_price
 test['sale_price'] = sale_price
 test['manage_stock'] = manage_stock
 test['stock_quantity'] = stock_quantity
+test['images'] = images
+
 
 # print()
 # print()
@@ -135,7 +142,6 @@ print()
 print()
 print()
 
-"""
 #########################################
 ### Configuracion de la conexion al servidor SQL ###
 import pyodbc 
@@ -145,7 +151,7 @@ username = 'Camess_SQLLogin_1'
 password = 'pelh6u7v1n'
 cnxn = pyodbc.connect('DRIVER={/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.7.so.1.1};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 cursor = cnxn.cursor()
-### Configuracion de la conexion al servidor SQL ###
+######
 
 cursor.execute('SELECT * FROM artAlco')
 for row in cursor:
@@ -157,19 +163,47 @@ for row in cursor:
 		test['categories'] = [{"id": 24}]
 	if row[2] == 'UNISEX':
 		test['categories'] = [{"id": 25}]
-	if row[2] == 'JUVENIL':
+	if row[2] == 'JUVENIL 	':
 		test['categories'] = [{"id": 26}]
+
+	if row[2] == '04 02 MEDICAMENTOS':
+		test['categories'] = [{"id": 27}]
+	if row[2] == '04 12 EQ P/MANEJO ANIMALES':
+			test['categories'] = [{"id": 28}]
+	if row[2] == '04 08 INST. VETERINARIO':
+			test['categories'] = [{"id": 29}]
+	if row[2] == '04 01 ALIMENTOS':
+			test['categories'] = [{"id": 30}]
+
 	test['manage_stock'] = True
 	test['stock_quantity'] = row[4]
+	test['images'] = images
 	### La linea siguiente hace el insert en la API de Woocomerce de los datos captados de la BD
-	# wcapi.post("products", test).json()
-	print(test['sku'],test['name'],test['regular_price'],test['categories'],test['manage_stock'],test['stock_quantity'],)
-print()
-print()
-cursor.execute('SELECT * FROM cteAlco')
-for row in cursor:
-    print(row)
-"""
+	wcapi.post("products", test).json()
+	print(
+			test['sku'],
+			test['name'],
+			test['regular_price'],
+			test['categories'],
+			test['manage_stock'],
+			test['stock_quantity'],
+			)
+# print()
+# print()
+# cursor.execute('SELECT * FROM artAlco')
+# for row in cursor:
+# 	print(row)
+# print()
+# print("-------Categories------")
+# categories = wcapi.get("products/categories").json()
+
+# for i in categories:
+# 	print(i)
+# 	print("-------------------")
+# cursor.execute('SELECT * FROM cteAlco')
+# for row in cursor:
+#     print(row)
+
 #########################################
 # api_customers_insert_example = {
 #     "email": "john.doe@example.com",
@@ -247,7 +281,7 @@ customers_insert['shipping'] = {
 						        "postcode": postcode
 						        }
 ### Borrar un usuario por el ID
-wcapi.delete("customers/13", params={"force": True}).json()
+# wcapi.delete("customers/13", params={"force": True}).json()
 ###
 
 ### Inserta un CUSTOMER a partir de un arreglo
@@ -376,19 +410,19 @@ order_insert['shipping'] 			= {
 order_insert['line_items'] 			= line_items
 order_insert['shipping_lines']  	= shipping_lines
 
-wcapi.post("orders", order_insert).json()
-wcapi.post("orders", order).json()
+# wcapi.post("orders", order_insert).json()
+# wcapi.post("orders", order).json()
 
-print('ORDERS')
-print()
-orders = wcapi.get('orders').json()
-for i in orders:
-	for key,value in i.items():
-		print(key,value)
-		print()
-	print('------------------------------------------------------------------------------------------------------------')
+# print('ORDERS')
+# print()
+# orders = wcapi.get('orders').json()
+# for i in orders:
+# 	for key,value in i.items():
+# 		print(key,value)
+# 		print()
+# 	print('------------------------------------------------------------------------------------------------------------')
 
-print()
-for key,value in order_insert.items():
-	print(key,value)
-print()
+# print()
+# for key,value in order_insert.items():
+# 	print(key,value)
+# print()
